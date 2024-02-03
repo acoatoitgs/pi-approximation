@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <mpfr.h>
-#define PRECISION 4000000
-#define CYCLES 10
+#define PRECISION 4000
+#define CYCLES 5
 
 mpfr_t y, a, pi;
 mpfr_t one, two, sqrttwo;
 void print(mpfr_t val)
 {
     char str[PRECISION];
-    mpfr_sprintf(str, "%.1000000Rf", val);
+    mpfr_sprintf(str, "%.1000Rf", val);
     printf("pi = %s\n", str);
 }
 
@@ -17,19 +17,12 @@ void f(mpfr_t result, mpfr_t y)
     mpfr_t temp;
     mpfr_init2(temp, PRECISION);
 
-    // Calcola y^4
     mpfr_pow_ui(temp, y, 4, MPFR_RNDN);
     mpfr_set(result, temp, MPFR_RNDN);
 
-    // Calcola 1 - y^4
     mpfr_ui_sub(temp, 1, temp, MPFR_RNDN);
 
-    // Calcola (1 - y^4)^(1/4)
     mpfr_rootn_ui(result, temp, 4, MPFR_RNDN);
-    return;
-    // Copia il risultato in result
-
-    // Libera la memoria allocata
     mpfr_clear(temp);
 }
 
@@ -48,6 +41,8 @@ void newY(mpfr_t result, mpfr_t y)
     mpfr_add(temp2, temp2, one, MPFR_RNDN);
 
     mpfr_div(result, temp1, temp2, MPFR_RNDN);
+    mpfr_clear(temp1);
+    mpfr_clear(temp2);
 }
 
 void newA(mpfr_t result, mpfr_t a, mpfr_t y, unsigned long k)
@@ -78,6 +73,10 @@ void newA(mpfr_t result, mpfr_t a, mpfr_t y, unsigned long k)
 
     // Finalize
     mpfr_add(result, temp1, temp2, MPFR_RNDN);
+    mpfr_clear(temp1);
+    mpfr_clear(temp2);
+    mpfr_clear(temp3);
+    mpfr_clear(exptwo);
 }
 
 int main()
@@ -112,6 +111,12 @@ int main()
     }
     // a
     print(pi);
+    mpfr_clear(y);
+    mpfr_clear(a);
+    mpfr_clear(pi);
+    mpfr_clear(one);
+    mpfr_clear(two);
+    mpfr_clear(sqrttwo);
 
     return 0;
 }
