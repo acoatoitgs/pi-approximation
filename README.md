@@ -13,7 +13,7 @@ Compile the program with:
 
 This approach is based on the Madhava-Leibniz convergent series:
 
-$$\sum_{n=0}^{\infty}\frac{(-1)^n}{2n+1}$$
+$$\pi = 4\sum_{n=0}^{\infty}\frac{(-1)^n}{2n+1}$$
 
 It's able to compute pi up to 9 decimal places in about 10s. This is already a pretty good result and it goes beyond any practical use.
 
