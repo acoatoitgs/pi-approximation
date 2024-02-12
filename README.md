@@ -27,7 +27,11 @@ Compile the program with:
 This is the best algorithm so far. It was discovered in 1985 by Jonathan and Peter Borwein. It's an iterative approach that is able to give over a trillion correct digits after only 20 iterations. 
 
 $$y_0 = \sqrt{2}-1, a_0 = 6-4\sqrt{2}$$
+
 $$f(y) = (1-y^4)^{1/4}$$
+
 $$y_{k+1} = (1-f(y_k))/(1+f(y_k))$$
-$$a_{k+1} = a_{k}(1+y_{k+1})^4-2^{2k+3}y_{k+1}(1+y_{k+1}+y_{k+1}^2)
+
+$$a_{k+1} = a_{k}(1+y_{k+1})^4-2^{2k+3}y_{k+1}(1+y_{k+1}+y_{k+1}^2)$$
+
 $$\pi \approx 1/{a_k}$$
