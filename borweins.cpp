@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <mpfr.h>
-#define PRECISION 4000
+#define PRECISION 4000000
 #define CYCLES 5
 
 mpfr_t y, a, pi;
@@ -8,7 +8,7 @@ mpfr_t one, two, sqrttwo;
 void print(mpfr_t val)
 {
     char str[PRECISION];
-    mpfr_sprintf(str, "%.1000Rf", val);
+    mpfr_sprintf(str, "%.1000000Rf", val);
     printf("pi = %s\n", str);
 }
 
