@@ -1,15 +1,29 @@
 #include <stdio.h>
 #include <mpfr.h>
+#include <stdlib.h>
 #define PRECISION 4000000
 #define CYCLES 5
 
 mpfr_t y, a, pi;
 mpfr_t one, two, sqrttwo;
-void print(mpfr_t val)
+
+// Function to write mpfr_t value to file
+void writeToFile(mpfr_t val, FILE *file)
 {
-    char str[PRECISION];
-    mpfr_sprintf(str, "%.1000000Rf", val);
-    printf("pi = %s\n", str);
+    // Calculate the required buffer size
+    size_t str_size = mpfr_snprintf(NULL, 0, "%.1000000Rf", val) + 1;
+    char *str = (char *)malloc(str_size); // Allocate memory for string
+
+    if (str != NULL)
+    {
+        mpfr_snprintf(str, str_size, "%.1000000Rf", val);
+        fprintf(file, "pi = %s\n", str);
+        free(str); // Free allocated memory
+    }
+    else
+    {
+        fprintf(stderr, "Memory allocation failed.\n");
+    }
 }
 
 void f(mpfr_t result, mpfr_t y)
@@ -47,7 +61,6 @@ void newY(mpfr_t result, mpfr_t y)
 
 void newA(mpfr_t result, mpfr_t a, mpfr_t y, unsigned long k)
 {
-
     mpfr_t temp1, temp2, temp3, exptwo;
     mpfr_init2(temp1, PRECISION);
     mpfr_init2(temp2, PRECISION);
@@ -81,7 +94,7 @@ void newA(mpfr_t result, mpfr_t a, mpfr_t y, unsigned long k)
 
 int main()
 {
-    // Inizialize high-precision floats
+    // Initialize high-precision floats
     mpfr_init2(y, PRECISION);
     mpfr_init2(a, PRECISION);
     mpfr_init2(pi, PRECISION);
@@ -103,14 +116,28 @@ int main()
     mpfr_set(y, sqrttwo, MPFR_RNDN);
     mpfr_add_si(y, y, -1, MPFR_RNDN);
 
+    // Open file to write output
+    FILE *file = fopen("pi_output.txt", "w");
+    if (file == NULL)
+    {
+        perror("Error opening file");
+        return 1;
+    }
+
     for (int i = 1; i <= CYCLES; i++)
     {
         newY(y, y);
         newA(a, a, y, i - 1);
         mpfr_ui_div(pi, 1, a, MPFR_RNDN);
     }
-    // a
-    print(pi);
+
+    // Write result to file
+    writeToFile(pi, file);
+
+    // Close the file
+    fclose(file);
+
+    // Clear memory
     mpfr_clear(y);
     mpfr_clear(a);
     mpfr_clear(pi);

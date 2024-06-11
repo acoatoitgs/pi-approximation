@@ -38,4 +38,4 @@ $$a_{k+1} = a_{k}(1+y_{k+1})^4-2^{2k+3}y_{k+1}(1+y_{k+1}+y_{k+1}^2)$$
 $$\pi \approx \frac{1}{a_k}$$
 
 Compile the program with:
-`gcc borweins.cpp -o borweins -lmpfr`
+`gcc borweins.c -o borweins -lmpfr`
